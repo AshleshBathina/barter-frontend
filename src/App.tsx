@@ -4,6 +4,9 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 
+import { Routes, Route } from 'react-router'
+import LoginPage from './pages/LoginPage'
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -20,6 +23,7 @@ function App() {
           <p>
             Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
           </p>
+          <LoginPage name="Naidu" />
         </div>
         <button
           type="button"
