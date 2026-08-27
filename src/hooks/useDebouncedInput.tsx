@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
-const DebouncedInput = () => {
+const useDebouncedInput = () => {
   const [username, setUsername] = useState("");
   const [debouncedUsername, setDebouncedUsername] = useState("");
-  const [availability, setAvailability] = useState("");
+  const [availability, setAvailability] = useState(false);
   const [usernameError, setUsernameError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -14,7 +14,7 @@ const DebouncedInput = () => {
     const username = e.target.value?.toLowerCase();
 
     setUsername(username);
-    setAvailability("");
+    setAvailability(false);
     setUsernameError("")
 
     if (!/^[a-z0-9]+$/.test(username)) {
@@ -46,7 +46,7 @@ const DebouncedInput = () => {
 
   useEffect(() => {
     if (!debouncedUsername) {
-      setAvailability("")
+      setAvailability(false)
       return;
     }
 
@@ -78,15 +78,19 @@ const DebouncedInput = () => {
 
   }, [debouncedUsername])
 
-  return (
-    <div className="">
-      <input value={username} onChange={handleUsername} />
-      {availability === true && <p>{debouncedUsername} is available</p>}
-      {availability === false && <p>{debouncedUsername} is not available</p>}
-      {usernameError && <p>{usernameError}</p>}
-      {isLoading && <p>Checking availability...</p>}
-    </div>
-  )
+  return {
+    username,
+    setUsername,
+    debouncedUsername,
+    setDebouncedUsername,
+    availability,
+    setAvailability,
+    usernameError,
+    setUsernameError,
+    isLoading,
+    setIsLoading,
+    handleUsername
+  }
 }
 
-export default DebouncedInput
+export default useDebouncedInput

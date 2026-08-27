@@ -1,7 +1,23 @@
 import { useState, useEffect} from "react";
 import {Link} from "react-router"
+import useDebouncedInput from "../hooks/useDebouncedInput"
 
 const LoginPage = () => {
+  const {
+    username,
+    setUsername,
+    debouncedUsername,
+    setDebouncedUsername,
+    availability,
+    setAvailability,
+    usernameError,
+    setUsernameError,
+    isLoading,
+    setIsLoading,
+    handleUsername
+  } = useDebouncedInput()
+
+
   return (
     <div className="h-screen p-8">
       <div className="h-full grid grid-cols-2 ">
@@ -23,7 +39,10 @@ const LoginPage = () => {
               </div>
               <div className="col-span-2">
                 <label className="text-gray-400 text-sm font-medium" htmlFor="username">Username</label>
-                <input className="p-3 text-gray-900 placeholder:text-gray-400 text-sm font-medium outline-none border-gray-300 border w-full bg-gray-200 rounded-md" id="username" placeholder="Username" type="text" />
+                <div className="text-gray-900 placeholder:text-gray-400 text-sm font-medium border-gray-300 border w-full bg-gray-200 rounded-md">
+                  <input className="h-full p-3 outline-none w-[90%]" value={username} onChange={handleUsername} id="username" placeholder="Username" type="text" />
+                  {isLoading && <span className="text-gray-400 text-sm font-medium animate-spin">A</span>}
+                </div>
               </div>
               <div className="col-span-2">
                 <label className="text-gray-400 text-sm font-medium" htmlFor="email">Email</label>
