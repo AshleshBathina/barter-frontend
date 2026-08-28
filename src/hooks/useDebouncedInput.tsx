@@ -11,6 +11,15 @@ const useDebouncedInput = () => {
   const handleUsername = (e) => {
     e.preventDefault();
 
+    if(!e.target.value){
+      setUsername("");
+      setDebouncedUsername("")
+      setAvailability(false);
+      setUsernameError("");
+      setIsLoading(false);
+      return;
+    };
+
     const username = e.target.value?.toLowerCase();
 
     setUsername(username);
@@ -65,15 +74,18 @@ const useDebouncedInput = () => {
           if (available) {
             setAvailability(available)
             setUsernameError("")
+            setIsLoading(false)
+          } else {
+            setAvailability(false)
+            setUsernameError(message)
+            setIsLoading(false);
           }
-          else setUsernameError(message)
-
         }
       }
 
       sendApiRequest()
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
 
   }, [debouncedUsername])
