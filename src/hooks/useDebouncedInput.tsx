@@ -23,7 +23,7 @@ const useDebouncedInput = () => {
     const username = e.target.value?.toLowerCase();
 
     setUsername(username);
-    setAvailability(false);
+    setAvailability("");
     setUsernameError("")
 
     if (!/^[a-z0-9]+$/.test(username)) {
