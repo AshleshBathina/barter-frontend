@@ -61,7 +61,7 @@ const useDebouncedInput = () => {
 
     try {
       const sendApiRequest = async () => {
-        const url = `http://localhost:3000/user/availability?username=${debouncedUsername}`;
+        const url = `${import.meta.env.VITE_SERVER_URL}/user/availability?username=${debouncedUsername}`;
         setIsLoading(true)
         const response = await fetch(url);
         setIsLoading(false)
