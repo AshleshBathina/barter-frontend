@@ -3,28 +3,17 @@ import {Link, useNavigate} from "react-router"
 import useDebouncedInput from "../hooks/useDebouncedInput"
 import {LoaderCircle, CircleCheck, CircleAlert} from "lucide-react"
 import Cookies from "js-cookie"
+import axios from "axios"
 
 const LoginPage = () => {
-
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: ""
-  })
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
   const navigate = useNavigate();
 
-  const {
-    username,
-    availability,
-    usernameError,
-    isLoading,
-    handleUsername
-  } = useDebouncedInput()
+  const [formData, setFormData] = useState({
+    username: "",
+    password: ""
+  })
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,44 +21,27 @@ const LoginPage = () => {
     setError(null);
     setLoading(true);
 
-    if(!availability){
-      setLoading(false);
-      setError("Username is not available");
-      return;
-    }
 
-    const {firstName, lastName, email, password} = formData
+    const {username, password} = formData
 
-    const url = `${import.meta.env.VITE_SERVER_URL}/auth/register`
+    const url = `${import.meta.env.VITE_SERVER_URL}/auth/login`;
 
     const formDataObj = {
-        firstName, lastName, email, password, username
-      }
-
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json" 
-      },
-      body: JSON.stringify(formDataObj)
+      id: username,
+      password
     }
 
-    const response = await fetch(url, options);
-
-    if(response.ok){
-      const data = await response.json();
-      const {jwtToken} = data;
-
+    try{
+      const response = await axios.post(url, formDataObj);
+      
+      const {jwtToken} = response.data;
       Cookies.set("jwtToken", jwtToken);
-      
-      
       navigate("/home");
-      
-    } else{
-      const data = await response.json();
-      const {message} = data;
-      setError(message || "Failed to create account");
+    } catch (error) {
+      const message = error.response?.data?.message;
+      setError(message || "Failed to login");
       setLoading(false);
+      return;
     }
   }
 
@@ -83,7 +55,7 @@ const LoginPage = () => {
 
       <div className="z-10 w-70 md:w-108 flex justify-center items-center bg-white rounded-2xl flex-col p-5 md:p-10">  
         <h1 className="text-xl md:text-2xl font-bold">Login</h1>
-        <p className="text-xs md:text-sm text-gray-500 ">New here? <Link className="underline" to="/">Register</Link></p>
+        <p className="text-xs md:text-sm text-gray-500 ">New here? <Link className="underline" to="/register">Register</Link></p>
 
         <form className="grid mt-5 md:mt-10  grid-cols-2 gap-2 md:gap-4 w-full" onSubmit={handleSubmit}>
           

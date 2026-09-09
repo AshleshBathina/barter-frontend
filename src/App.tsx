@@ -12,8 +12,8 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/home" Component={LoginPage}/>
-      <Route path="/" Component={RegisterPage}/>
+      <Route path="/login" Component={LoginPage}/>
+      <Route path="/register" Component={RegisterPage}/>
     </Routes>
   )
 }
