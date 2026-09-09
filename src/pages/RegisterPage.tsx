@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router"
 import useDebouncedInput from "../hooks/useDebouncedInput"
 import {LoaderCircle, CircleCheck, CircleAlert} from "lucide-react"
 import Cookies from "js-cookie"
+import axios from "axios"
 
 const RegisterPage = () => {
 
@@ -43,32 +44,18 @@ const RegisterPage = () => {
     const url = `${import.meta.env.VITE_SERVER_URL}/auth/register`
 
     const formDataObj = {
-        firstName, lastName, email, password, username
-      }
-
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json" 
-      },
-      body: JSON.stringify(formDataObj)
+      firstName, lastName, email, password, username
     }
 
-    const response = await fetch(url, options);
+    const response = await axios.post(url, formDataObj);
 
-    if(response.ok){
-      const data = await response.json();
-      const {jwtToken} = data;
-
+    try{
+      const {jwtToken} = response.data;
       Cookies.set("jwtToken", jwtToken);
-      
-      
       navigate("/home");
-      
-    } else{
-      const data = await response.json();
-      const {message} = data;
-      setError(message || "Failed to create account");
+    } catch (error) {
+      const message = axios.isAxiosError(error) ? error.response?.data?.message : "Failed to create account";
+      setError(message);
       setLoading(false);
     }
   }

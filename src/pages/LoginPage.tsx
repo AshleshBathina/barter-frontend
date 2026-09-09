@@ -38,8 +38,8 @@ const LoginPage = () => {
       Cookies.set("jwtToken", jwtToken);
       navigate("/home");
     } catch (error) {
-      const message = error.response?.data?.message;
-      setError(message || "Failed to login");
+      const message = axios.isAxiosError(error) ? error.response?.data?.message : "Failed to login";
+      setError(message);
       setLoading(false);
       return;
     }
