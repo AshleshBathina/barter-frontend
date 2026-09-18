@@ -1,28 +1,32 @@
-import { useState, useEffect} from "react";
+import React, { useState} from "react";
 import {Link, useNavigate} from "react-router"
-import useDebouncedInput from "../hooks/useDebouncedInput"
-import {LoaderCircle, CircleCheck, CircleAlert} from "lucide-react"
+import {LoaderCircle} from "lucide-react"
 import Cookies from "js-cookie"
 import axios from "axios"
+
+interface FormData{
+  username: string;
+  password: string;
+}
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     username: "",
     password: ""
   })
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setError(null);
     setLoading(true);
 
 
-    const {username, password} = formData
+    const {username, password} = formData;
 
     const url = `${import.meta.env.VITE_SERVER_URL}/auth/login`;
 

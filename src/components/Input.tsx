@@ -1,6 +1,6 @@
 
 
-const Input = ({className, label, id, placeholder, }) => {
+const Input = () => {
   
   return (
     <div>
