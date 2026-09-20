@@ -1,21 +1,29 @@
-import { useState} from "react";
+import React, { useState} from "react";
 import {Link, useNavigate} from "react-router"
 import useDebouncedInput from "../hooks/useDebouncedInput"
 import {LoaderCircle, CircleCheck, CircleAlert} from "lucide-react"
 import Cookies from "js-cookie"
 import axios from "axios"
+import Input from "../components/Input.tsx"
+
+interface RegisterFormData{
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
 
 const RegisterPage = () => {
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<RegisterFormData>({
     firstName: "",
     lastName: "",
     email: "",
     password: ""
   })
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -27,7 +35,7 @@ const RegisterPage = () => {
     handleUsername
   } = useDebouncedInput()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setError(null);
@@ -47,10 +55,10 @@ const RegisterPage = () => {
       firstName, lastName, email, password, username
     }
 
-    const response = await axios.post(url, formDataObj);
-
     try{
+      const response = await axios.post(url, formDataObj);
       const {jwtToken} = response.data;
+      
       Cookies.set("jwtToken", jwtToken);
       navigate("/home");
     } catch (error) {
@@ -73,12 +81,24 @@ const RegisterPage = () => {
         <p className="text-xs md:text-sm text-gray-500 ">Already have an account? <Link className="underline" to="/login">Log in</Link></p>
         <form className="grid mt-5 md:mt-10 grid-cols-2 gap-2 md:gap-4" onSubmit={handleSubmit}>
           <div>
-            <label className="text-gray-400 text-xs md:text-sm font-medium" htmlFor="firstName">First Name</label>
-            <input className="p-2 w-full outline-none text-gray-900 placeholder:text-gray-300 text-xs md:text-sm font-medium border-gray-300 border bg-gray-200 rounded-md" value={formData.firstName} onChange={(e) => setFormData({...formData, firstName: e.target.value})} id="firstName" placeholder="First Name" type="text"/>
+            <Input
+              id="firstName"
+              label="First Name"
+              value={formData.firstName}
+              onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+              placeholder="First Name"
+              type="text"
+            />
           </div>
           <div>
-            <label className="text-gray-400 text-xs md:text-sm font-medium" htmlFor="lastName">Last Name</label>
-            <input className="p-2 w-full text-gray-900 placeholder:text-gray-300 text-xs md:text-sm font-medium outline-none border-gray-300 border bg-gray-200 rounded-md" value={formData.lastName} onChange={(e) => setFormData({...formData, lastName: e.target.value})} id="lastName" placeholder="Last Name" type="text" />
+            <Input
+              id="lastName"
+              label="Last Name"
+              value={formData.lastName}
+              onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+              placeholder="Last Name"
+              type="text"
+            />
           </div>
           <div className="col-span-2">
             <label className="text-gray-400 text-xs md:text-sm font-medium" htmlFor="username">Username</label>
@@ -92,17 +112,29 @@ const RegisterPage = () => {
             {usernameError && <p className="text-red-500 mt-1 text-[10px] md:text-sm font-medium w-full leading-none">*{usernameError}</p>}
           </div>
           <div className="col-span-2">
-            <label className="text-gray-400 text-xs md:text-sm font-medium" htmlFor="email">Email</label>
-            <input className="w-full p-2 outline-none border-gray-300 text-xs md:text-sm font-medium text-gray-900 placeholder:text-gray-300 border bg-gray-200 rounded-md" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} id="email" placeholder="Email" type="email" />
+            <Input
+              id="email"
+              label="Email"
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              placeholder="Email"
+              type="email"
+            />
           </div>
           <div className="col-span-2">
-            <label className="text-gray-400 text-xs md:text-sm font-medium" htmlFor="password">Password</label>
-            <input className="w-full p-2 border-gray-300 text-xs md:text-sm font-medium outline-none border text-gray-900 placeholder:text-gray-300 bg-gray-200 rounded-md" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} id="password" placeholder="Password" type="password" />
+            <Input
+              id="password"
+              label="Password"
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              placeholder="Password"
+              type="password"
+            />
           </div>
 
           <div className="col-span-2 mt-3 md:mt-5">
             <button className="font-medium w-full text-xs md:text-sm flex justify-center bg-violet-600 hover:bg-violet-500 border rounded-md outline-none mb-0 text-white p-2.5 md:p-3 cursor-pointer" type="submit">{loading? <LoaderCircle className="text-white animate-spin" /> : "Create account"}</button>
-          {error && <p className="text-red-500 text-[10px] md:text-sm w-full mt-1 font-medium leading-none">*{error}</p>}
+            {error && <p className="text-red-500 text-[10px] md:text-sm w-full mt-1 font-medium leading-none">*{error}</p>}
           </div>
         </form>
       </div>

@@ -1,11 +1,21 @@
 
+interface InputProps {
+  label: string;
+  value: string;
+  id: string;
+  placeholder?: string;
+  type?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-const Input = () => {
+const Input = ({id, label, ...props}: InputProps) => {
   
   return (
-    <div>
-      <label className="text-gray-400 text-sm font-medium" htmlFor="lastName">Last Name</label>
-      <input className="p-3 w-full text-gray-900 placeholder:text-gray-400 text-sm font-medium outline-none border-gray-300 border bg-gray-200 rounded-md" id="lastName" placeholder="Last Name" type="text" />
-    </div>
+    <>
+      <label className="text-gray-400 text-xs md:text-sm font-medium" htmlFor={id}>{label}</label>
+      <input className="w-full p-2 outline-none border-gray-300 text-xs md:text-sm font-medium text-gray-900 placeholder:text-gray-300 border bg-gray-200 rounded-md" id={id} {...props} />
+    </>
   )
 }
+
+export default Input;
