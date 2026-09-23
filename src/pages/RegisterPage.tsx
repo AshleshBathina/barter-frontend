@@ -49,7 +49,7 @@ const RegisterPage = () => {
 
     const {firstName, lastName, email, password} = formData
 
-    const url = `${import.meta.env.VITE_SERVER_URL}/auth/register`
+    const url = `${import.meta.env.VITE_SERVER_URL}/api/auth/register`
 
     const formDataObj = {
       firstName, lastName, email, password, username
@@ -104,9 +104,12 @@ const RegisterPage = () => {
             <label className="text-gray-400 text-xs md:text-sm font-medium" htmlFor="username">Username</label>
             <div className="text-gray-900 flex items-center font-medium border-gray-300 border w-full bg-gray-200 rounded-md h-9 md:h-10">
               <input className="p-2 outline-none w-[90%] text-xs md:text-sm placeholder:text-gray-300" value={username} onChange={handleUsername} id="username" placeholder="Username" type="text" />
-              <div className="flex justify-center p-2">
-                
-                {isLoading? <LoaderCircle className="text-gray-400 text-xs font-medium animate-spin"/> : availability === true ? <span className="text-green-500 text-xs font-medium"><CircleCheck/></span> : availability === false && username && <span className="text-red-500 text-xs font-medium"><CircleAlert/></span>}
+              <div className="flex justify-center p-2">  
+                {isLoading
+                ? <LoaderCircle className="text-gray-400 text-xs font-medium animate-spin"/> 
+                : availability === true 
+                ? <span className="text-green-500 text-xs font-medium"><CircleCheck/></span> 
+                : availability === false && <span className="text-red-500 text-xs font-medium"><CircleAlert/></span>}
               </div>
             </div>
             {usernameError && <p className="text-red-500 mt-1 text-[10px] md:text-sm font-medium w-full leading-none">*{usernameError}</p>}
@@ -142,4 +145,4 @@ const RegisterPage = () => {
   )
 }
 
-export default RegisterPage
+export default RegisterPage;

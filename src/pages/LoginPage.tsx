@@ -29,7 +29,7 @@ const LoginPage = () => {
 
     const {username, password} = formData;
 
-    const url = `${import.meta.env.VITE_SERVER_URL}/auth/login`;
+    const url = `${import.meta.env.VITE_SERVER_URL}/api/auth/login`;
 
     const formDataObj = {
       id: username,
