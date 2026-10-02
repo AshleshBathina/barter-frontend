@@ -13,7 +13,7 @@ function App() {
       <Route path="/login" Component={LoginPage}/>
       <Route path="/register" Component={RegisterPage}/>
       <Route path="/" Component={Layout}>
-        <Route path="home" Component={HomePage}/>
+        <Route index Component={HomePage}/>
       </Route>
     </Routes>
   )
