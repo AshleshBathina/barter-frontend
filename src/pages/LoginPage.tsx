@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import {Link, useNavigate} from "react-router"
-import {LoaderCircle} from "lucide-react"
+import {LoaderCircle, Eye, EyeOff} from "lucide-react"
 import Cookies from "js-cookie"
 import axios from "axios"
 import Input from "../components/Input.tsx"
@@ -17,6 +17,7 @@ const LoginPage = () => {
     username: "",
     password: ""
   })
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,14 +77,13 @@ const LoginPage = () => {
           </div>
 
           <div className="col-span-2">
-            <Input 
-              label="Password"
-              value={formData.password} 
-              onChange={(e) => setFormData({...formData, password: e.target.value})} 
-              id="password"
-              placeholder="Password"
-              type="password"
-            />
+            <label className="text-gray-400 text-xs md:text-sm font-medium" htmlFor="password">Password</label>
+            <div className="text-gray-900 flex items-center font-medium border-gray-300 border w-full bg-gray-200 rounded-md h-9 md:h-10">
+              <input className="p-2 outline-none w-[90%] text-xs md:text-sm placeholder:text-gray-300" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})}  id="password" placeholder="Password" type={showPassword? "text" : "password"} />
+              <button className="flex justify-center items-center p-2 cursor-pointer" type="button" onClick={() => setShowPassword(!showPassword)}>  
+                <span className="md:size-6 text-gray-500 hover:text-gray-800">{showPassword? <Eye/> : <EyeOff/>}</span>
+              </button>
+            </div>
           </div>
 
           <div className="col-span-2 mt-3 md:mt-5">

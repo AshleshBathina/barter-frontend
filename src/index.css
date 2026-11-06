@@ -10,3 +10,8 @@
 body {
   font-family: 'Inter', sans-serif;
 }
+
+input::-ms-reveal,
+input::-ms-clear{
+  display: none;
+}
