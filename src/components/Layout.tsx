@@ -3,11 +3,9 @@ import {Outlet} from "react-router"
 
 const Layout = () => {
   return (
-    <div className="min-h-screen">
+    <div className="h-screen">
       <Navbar/>
-      <div className="">
-        <Outlet/>
-      </div>
+      <Outlet/>
     </div>
   )
 }
